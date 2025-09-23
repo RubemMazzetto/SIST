@@ -4,7 +4,6 @@ const client_1 = require("@prisma/client");
 const express_1 = require("express");
 const prisma = new client_1.PrismaClient();
 const router = (0, express_1.Router)();
-// Tipo explícito para o handler de profile
 const profileHandler = async (req, res, next) => {
     const userId = req.user?.id;
     if (!userId) {

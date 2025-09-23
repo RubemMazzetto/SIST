@@ -8,7 +8,6 @@ interface AuthRequest extends Request {
     user?: { id: number };
 }
 
-// Tipo explícito para o handler de profile
 const profileHandler: RequestHandler<{}, any, {}, {}, AuthRequest> = async (req, res, next) => {
     const userId = req.user?.id;
     if (!userId) {

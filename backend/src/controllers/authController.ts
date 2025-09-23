@@ -35,7 +35,6 @@ const hashPassword = (password: string): string => {
     return crypto.createHash('sha256').update(password).digest('hex');
 };
 
-// Tipo explícito para o handler de register
 const registerHandler: RequestHandler<{}, { message: string; userId: number }, RegisterRequestBody> = async (req, res, next) => {
     const { first_name, last_name, cpf, email, phone, password, user_type_id, user_address } = req.body;
     const hashedPassword = hashPassword(password);
@@ -62,7 +61,6 @@ const registerHandler: RequestHandler<{}, { message: string; userId: number }, R
     }
 };
 
-// Tipo explícito para o handler de login
 const loginHandler: RequestHandler<{}, { token: string }, LoginRequestBody> = async (req, res, next) => {
     const { email, password } = req.body;
     const hashedPassword = hashPassword(password);

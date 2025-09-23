@@ -12,7 +12,6 @@ const router = (0, express_1.Router)();
 const hashPassword = (password) => {
     return crypto_1.default.createHash('sha256').update(password).digest('hex');
 };
-// Tipo explícito para o handler de register
 const registerHandler = async (req, res, next) => {
     const { first_name, last_name, cpf, email, phone, password, user_type_id, user_address } = req.body;
     const hashedPassword = hashPassword(password);
@@ -38,7 +37,6 @@ const registerHandler = async (req, res, next) => {
         next(error);
     }
 };
-// Tipo explícito para o handler de login
 const loginHandler = async (req, res, next) => {
     const { email, password } = req.body;
     const hashedPassword = hashPassword(password);
