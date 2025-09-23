@@ -1,0 +1,57 @@
+enum UserTypeEnum {
+  Admin
+  Technician
+  User
+}
+
+model UserType {
+  id    Int          @id @default(autoincrement())
+  type  UserTypeEnum @unique
+  users User[]
+}
+
+model UserAddress {
+  id           Int     @id @default(autoincrement())
+  cep          String  @db.Char(8)
+  street       String  @db.VarChar(75)
+  number       String? @db.VarChar(9)
+  neighborhood String? @db.VarChar(45)
+  complement   String? @db.VarChar(45)
+  town         String  @db.VarChar(45)
+  state        String  @db.VarChar(45)
+  country      String  @db.VarChar(45)
+  user         User    @relation(fields: [id], references: [user_address_id])
+}
+
+model User {
+  id                 Int              @id @default(autoincrement())
+  first_name         String           @db.VarChar(72)
+  last_name          String           @db.VarChar(72)
+  cpf                String           @unique @db.Char(11)
+  email              String           @unique @db.VarChar(72)
+  phone              String           @unique @db.VarChar(15)
+  password           String           @db.VarChar(60)
+  created_at         DateTime         @default(now())
+  updated_at         DateTime         @updatedAt
+  user_type_id       Int
+  user_type          UserType         @relation(fields: [user_type_id], references: [id])
+  user_address_id    Int              @unique
+  user_address       UserAddress      @relation(fields: [user_address_id], references: [id])
+  permissions        UserPermission[]
+  orders_applicant   Order[]          @relation("Applicant")
+  orders_responsible Order[]          @relation("Responsible")
+
+  @@index([email])
+  @@index([cpf])
+  @@index([phone])
+}
+
+model UserPermission {
+  id              Int     @id @default(autoincrement())
+  permission_type String  @db.VarChar(60)
+  granted         Boolean @default(true)
+  user_id         Int
+  user            User    @relation(fields: [user_id], references: [id])
+
+  @@index([user_id])
+}

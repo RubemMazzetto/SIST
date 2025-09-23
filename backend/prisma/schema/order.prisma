@@ -1,0 +1,51 @@
+enum OrderType {
+  Request
+  Incident
+}
+
+enum OrderSituation {
+  Open
+  Suspended
+  Closed
+  Reopened
+}
+
+model Order {
+  id                          Int              @id @default(autoincrement())
+  order_number                Int
+  open_at                     DateTime         @default(now())
+  updated_at                  DateTime         @updatedAt
+  order_type                  OrderType
+  support_type                String           @db.VarChar(60)
+  user_applicant_id           Int
+  user_applicant              User             @relation("Applicant", fields: [user_applicant_id], references: [id])
+  user_current_responsible_id Int
+  user_current_responsible    User             @relation("Responsible", fields: [user_current_responsible_id], references: [id])
+  situation                   OrderSituation
+  description                 String?          @db.Text
+  equipment                   OrderEquipment[]
+
+  @@index([user_applicant_id])
+  @@index([user_current_responsible_id])
+}
+
+model Equipment {
+  id              Int              @id @default(autoincrement())
+  equipment_type  String           @db.VarChar(45)
+  equipment_brand String           @db.VarChar(45)
+  equipment_model String           @db.VarChar(45)
+  serial_number   String           @unique @db.VarChar(75)
+  sector          String           @db.VarChar(45)
+  acquired_at     DateTime
+  orders          OrderEquipment[]
+
+  @@index([serial_number])
+}
+
+model OrderEquipment {
+  id           Int       @id @default(autoincrement())
+  order_id     Int
+  equipment_id Int
+  order        Order     @relation(fields: [order_id], references: [id])
+  equipment    Equipment @relation(fields: [equipment_id], references: [id])
+}
