@@ -1,10 +1,4 @@
-# SIST
-<div align="center">
-
-<title>SIST</title>
-*Sistema Interno de Suporte Técnico*
-</div>
----
+# SIST - Sistema Interno de Suporte Técnico 
 
 ## Sobre o Projeto
 
